@@ -6,6 +6,7 @@
 #include <iostream>
 #include <random>
 #include <vector>
+#include <omp.h>
 
 // =================
 // Helper Functions
@@ -84,7 +85,6 @@ char* find_string_option(int argc, char** argv, const char* option, char* defaul
     if (iplace >= 0 && iplace < argc - 1) {
         return argv[iplace + 1];
     }
-
     return default_value;
 }
 
@@ -123,6 +123,10 @@ int main(int argc, char** argv) {
 
 #ifdef _OPENMP
 #pragma omp parallel default(shared)
+//#pragma omp parallel num_threads(6)
+//   printf("max threads is %d\n", omp_get_max_threads());
+    printf("current threads is %d\n", omp_get_num_threads());
+   
 #endif
     {
         for (int step = 0; step < nsteps; ++step) {
