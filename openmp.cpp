@@ -169,7 +169,7 @@ void simulate_one_step(particle_t* parts, int num_parts, double size) {
     }
 #pragma omp for collapse(2)
     for (int i = 0; i < bin_num; i=i+2) {
-        for (int j = 0; j < bin_num; ++j) {
+        for (int j = 0; j < bin_num; j=j+2) {
             for (std::list<particle_t*>::iterator it = bin_array[i][j].plist.begin(); it != bin_array[i][j].plist.end();) {
 
                 particle_t* p = *it;
@@ -192,7 +192,51 @@ void simulate_one_step(particle_t* parts, int num_parts, double size) {
 
 #pragma omp for collapse(2)
     for (int i = 1; i < bin_num; i = i + 2) {
-        for (int j = 0; j < bin_num; ++j) {
+        for (int j = 0; j < bin_num; j=j+2) {
+            for (std::list<particle_t*>::iterator it = bin_array[i][j].plist.begin(); it != bin_array[i][j].plist.end();) {
+                particle_t* p = *it;
+                // move(*p, size);
+                int index_row = int(p->y / bin_size);
+                int index_col = int(p->x / bin_size);
+                if (index_row != i || index_col != j) {
+                    std::list<particle_t*>::iterator nextIt = std::next(it);
+                    bin_array[i][j].plist.erase(it);
+                    bin_array[index_row][index_col].plist.push_back(p);
+                    it = nextIt;
+                }
+                else
+                {
+                    ++it;
+                }
+            }
+        }
+    }
+
+#pragma omp for collapse(2)
+    for (int i = 0; i < bin_num; i = i + 2) {
+        for (int j = 1; j < bin_num; j=j+2) {
+            for (std::list<particle_t*>::iterator it = bin_array[i][j].plist.begin(); it != bin_array[i][j].plist.end();) {
+                particle_t* p = *it;
+                // move(*p, size);
+                int index_row = int(p->y / bin_size);
+                int index_col = int(p->x / bin_size);
+                if (index_row != i || index_col != j) {
+                    std::list<particle_t*>::iterator nextIt = std::next(it);
+                    bin_array[i][j].plist.erase(it);
+                    bin_array[index_row][index_col].plist.push_back(p);
+                    it = nextIt;
+                }
+                else
+                {
+                    ++it;
+                }
+            }
+        }
+    }
+
+#pragma omp for collapse(2)
+    for (int i = 1; i < bin_num; i = i + 2) {
+        for (int j = 1; j < bin_num; j=j+2) {
             for (std::list<particle_t*>::iterator it = bin_array[i][j].plist.begin(); it != bin_array[i][j].plist.end();) {
                 particle_t* p = *it;
                 // move(*p, size);
