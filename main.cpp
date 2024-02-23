@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
     init_simulation(parts, num_parts, size);
 
 #ifdef _OPENMP
-#pragma omp parallel default(shared)
+#pragma omp parallel num_threads(6) default(shared)
 //#pragma omp parallel num_threads(6)
 //   printf("max threads is %d\n", omp_get_max_threads());
 //    printf("current threads is %d\n", omp_get_num_threads());
