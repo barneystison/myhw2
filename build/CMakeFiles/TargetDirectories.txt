@@ -1,0 +1,4 @@
+/global/homes/q/qz1999/myhw2/build/CMakeFiles/rebuild_cache.dir
+/global/homes/q/qz1999/myhw2/build/CMakeFiles/edit_cache.dir
+/global/homes/q/qz1999/myhw2/build/CMakeFiles/openmp.dir
+/global/homes/q/qz1999/myhw2/build/CMakeFiles/serial.dir

@@ -125,7 +125,7 @@ int main(int argc, char** argv) {
 #pragma omp parallel default(shared)
 //#pragma omp parallel num_threads(6)
 //   printf("max threads is %d\n", omp_get_max_threads());
-    printf("current threads is %d\n", omp_get_num_threads());
+//    printf("current threads is %d\n", omp_get_num_threads());
    
 #endif
     {
