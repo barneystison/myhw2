@@ -1,0 +1,4 @@
+/home/zzdviky1/projects/CLASS-SP24-main/hw2/build/CMakeFiles/rebuild_cache.dir
+/home/zzdviky1/projects/CLASS-SP24-main/hw2/build/CMakeFiles/edit_cache.dir
+/home/zzdviky1/projects/CLASS-SP24-main/hw2/build/CMakeFiles/openmp.dir
+/home/zzdviky1/projects/CLASS-SP24-main/hw2/build/CMakeFiles/serial.dir
