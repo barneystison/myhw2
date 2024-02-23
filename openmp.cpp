@@ -8,7 +8,13 @@
 typedef struct Bin {
     std::list<particle_t*> plist;
 }Bin;
-
+typedef struct SaveBin {
+    particle_t* p;
+    int current_row;
+    int current_col;
+    int next_row;
+    int next_col;
+}SaveBin;;
 Bin** bin_array = NULL;
 double bin_size = 0.0;
 int bin_num = 0;
@@ -95,6 +101,7 @@ void simulate_one_step(particle_t* parts, int num_parts, double size) {
 
     // Compute Forces
   // Compute Forces
+    std::vector<SaveBin> temp_vector;
 #pragma omp for collapse(2)
     for (int i = 0; i < bin_num; ++i) {
         for (int j = 0; j < bin_num; ++j) {
@@ -173,14 +180,21 @@ void simulate_one_step(particle_t* parts, int num_parts, double size) {
     for (int i = 0; i < bin_num; ++i) {
         for (int j = 0; j < bin_num; ++j) {
             for (std::list<particle_t*>::iterator it = bin_array[i][j].plist.begin(); it != bin_array[i][j].plist.end();) {
+                
                 particle_t* p = *it;
                 // move(*p, size);
                 int index_row = int(p->y / bin_size);
                 int index_col = int(p->x / bin_size);
-                if (index_row != i || index_col != j) {
+                if (index_row != i || index_col != j) {           
+                    SaveBin save_bin;
+                    save_bin.current_col = j;
+                    save_bin.current_row = i;
+                    save_bin.next_col = index_col;
+                    save_bin.next_row = index_row;
+                    save_bin.p = p;
                     std::list<particle_t*>::iterator nextIt = std::next(it);
+                    temp_vector.push_back(save_bin);
                     bin_array[i][j].plist.erase(it);
-                    bin_array[index_row][index_col].plist.push_back(p);
                     it = nextIt;
                 }
                 else
@@ -189,6 +203,12 @@ void simulate_one_step(particle_t* parts, int num_parts, double size) {
                 }
             }
         }
+    }
+
+#pragma omp for
+    for (std::vector<SaveBin>::iterator it = temp_vector.begin(); it != temp_vector.end(); ++it) {
+        SaveBin sb = *it;
+        bin_array[sb.next_row][sb.next_col].plist.push_back(sb.p);
     }
 
 }
